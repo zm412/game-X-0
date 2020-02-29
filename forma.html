@@ -1,0 +1,137 @@
+<!DOCTYPE html> <html> <head> <meta charset="utf-8"> <title></title> <body>
+<style>
+	table{
+		border: 2px solid black;
+		position: absolute; 
+			top: 15%; 
+			left: 15%; 
+			width: 100px; 
+			height: 100px; 
+	}
+	td, th{
+		text-align: center;
+		border: 2px solid black;
+		width: 30px;
+		height: 25px;
+	}
+
+
+	.cell{
+
+	}
+
+
+</style><body>
+		<div id = 'leader'>
+	<table id = 'tbl' class = 'middle'>
+	<tr><td class = 'cell'></td><td class = 'cell'></td><td class = 'cell'></td></tr>
+	<tr><td class = 'cell'></td><td class = 'cell'></td><td class = 'cell'></td></tr>
+	<tr><td class = 'cell'></td><td class = 'cell'></td><td class = 'cell'></td></tr>
+	</table>
+		</div>
+	<p> Viigral: <span id = 'who'></span></p>
+	<button id = 'butt'>Start again</button>
+	<p> ViigralX:<span id = 'winX'></span>
+	<p> Viigral0:<span id = 'win0'></span>
+
+</body> 
+
+<script>
+'use strict'
+
+let tbl = document.getElementById('tbl');
+let who = document.getElementById('who');
+let butt = document.getElementById('butt');
+let cells = tbl.querySelectorAll('.cell');
+	let winX = document.getElementById('winX');
+	let win0 = document.getElementById('win0');
+let result = [];
+let countWinX = 0;
+let countWin0 = 0;
+
+startGame(tbl, who, butt);
+
+function startGame(tbl, who, butt){
+		//who.innerHTML = '';
+	let gamer = 'X';
+	let nextG = (gamer) => (gamer == 'X') ? '0' : 'X';
+	addListener(cells, prepareCell);
+		
+		function prepareCell(){
+			this.innerHTML = gamer;
+			gamer = nextG(gamer);
+		this.removeEventListener('click',prepareCell);
+		counterWins(prepareCell);
+}
+
+		butt.addEventListener('click', function(){
+				clearCells(cells);
+				startGame(tbl, who, butt);
+		});
+
+}
+
+console.log(result);
+
+function counterWins(func){
+	let win = getWinner(cells);
+	getResult(win, cells, func,who);  
+	if(win !== false){
+			if(win == 'X'){
+			countWinX++;
+			winX.innerHTML = countWinX;
+				}
+			else{
+			countWin0++;
+			win0.innerHTML = countWin0;
+}
+}
+}
+
+function getResult(str, elems, func, el){
+		if(str !== false){
+		el.innerHTML += str;
+			result.push(str);
+		removeList(elems, func);
+		}
+}	
+
+
+
+function getWinner(elems){
+	let arr = [[0,1,2], [3,4,5], [6,7,8],[0,3,6],[1,4,7],[2,5,8], [0,4,8], [2,4,6]];
+	for(let i = 0; i < arr.length; i++){
+		let comb = arr[i];
+		if(elems[comb[0]].innerHTML == elems[comb[1]].innerHTML &&
+elems[comb[1]].innerHTML == elems[comb[2]].innerHTML &&
+elems[comb[0]].innerHTML !== ''){
+		return elems[comb[0]].innerHTML;}}
+		return false;
+}
+
+function addListener(elems, func){
+	for(let i = 0; i < elems.length; i++){
+	elems[i].addEventListener('click', func);
+	}
+}
+
+function removeList(elems, func){
+	for(let i = 0; i < elems.length; i++){
+	elems[i].removeEventListener('click', func);
+	}
+}
+
+function clearCells(cells){
+	for(let i = 0; i < cells.length; i++){
+		cells[i].innerHTML = '';
+	}
+}
+	
+
+
+</script>
+ 
+	</head>
+	
+</html>
+
