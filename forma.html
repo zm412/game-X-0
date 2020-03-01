@@ -31,8 +31,8 @@
 		</div>
 	<p> Viigral: <span id = 'who'></span></p>
 	<button id = 'butt'>Start again</button>
-	<p> ViigralX:<span id = 'winX'></span>
-	<p> Viigral0:<span id = 'win0'></span>
+	<p> ViigralX:<span id = 'winX'></span></p>
+	<p> Viigral0:<span id = 'win0'></span></p>
 
 </body> 
 
@@ -46,13 +46,11 @@ let cells = tbl.querySelectorAll('.cell');
 	let winX = document.getElementById('winX');
 	let win0 = document.getElementById('win0');
 let result = [];
-let countWinX = 0;
-let countWin0 = 0;
 
 startGame(tbl, who, butt);
 
 function startGame(tbl, who, butt){
-		//who.innerHTML = '';
+	who.innerHTML = '';
 	let gamer = 'X';
 	let nextG = (gamer) => (gamer == 'X') ? '0' : 'X';
 	addListener(cells, prepareCell);
@@ -61,52 +59,53 @@ function startGame(tbl, who, butt){
 			this.innerHTML = gamer;
 			gamer = nextG(gamer);
 		this.removeEventListener('click',prepareCell);
-		counterWins(prepareCell);
+	let winner = getWinner(cells);
+		if(winner === 'X'){
+				who.innerHTML = 'X';	
+		removeList(cells,prepareCell);
+		}
+		else if(winner === '0'){
+				who.innerHTML = '0'; 
+		removeList(cells,prepareCell);
+		}
+
 }
 
 		butt.addEventListener('click', function(){
-				clearCells(cells);
-				startGame(tbl, who, butt);
+			result.push(who.innerHTML);	
+			clearCells(cells);
+			startGame(tbl, who, butt);
+				winX.innerHTML = countEl(result, 'X');
+				win0.innerHTML = countEl(result, '0');
 		});
 
 }
 
-console.log(result);
-
-function counterWins(func){
-	let win = getWinner(cells);
-	getResult(win, cells, func,who);  
-	if(win !== false){
-			if(win == 'X'){
-			countWinX++;
-			winX.innerHTML = countWinX;
-				}
-			else{
-			countWin0++;
-			win0.innerHTML = countWin0;
-}
-}
-}
-
-function getResult(str, elems, func, el){
-		if(str !== false){
-		el.innerHTML += str;
-			result.push(str);
-		removeList(elems, func);
+function countEl(arr, str){
+	let count = 0;
+	for(let elem of arr){
+	elem === str ? count++ : count;
 		}
-}	
+	return count;
+}
 
-
+console.log(result);
 
 function getWinner(elems){
 	let arr = [[0,1,2], [3,4,5], [6,7,8],[0,3,6],[1,4,7],[2,5,8], [0,4,8], [2,4,6]];
+	let combsArr;
+	let win;
 	for(let i = 0; i < arr.length; i++){
 		let comb = arr[i];
-		if(elems[comb[0]].innerHTML == elems[comb[1]].innerHTML &&
-elems[comb[1]].innerHTML == elems[comb[2]].innerHTML &&
-elems[comb[0]].innerHTML !== ''){
-		return elems[comb[0]].innerHTML;}}
-		return false;
+		 combsArr = [elems[comb[0]].innerHTML, elems[comb[1]].innerHTML, elems[comb[2]].innerHTML]; 
+		if(combsArr.every(elem => elem === 'X')){
+			win = 'X';}
+		else if(combsArr.every(elem => elem === '0')){
+			win = '0'; }
+	}
+
+		console.log(win);
+		return win;
 }
 
 function addListener(elems, func){
