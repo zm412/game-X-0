@@ -29,10 +29,12 @@
 	<tr><td class = 'cell'></td><td class = 'cell'></td><td class = 'cell'></td></tr>
 	</table>
 		</div>
-	<p> Viigral: <span id = 'who'></span></p>
+		<div>	<p> Viigral: <span id = 'who'></span></p>
 	<button id = 'butt'>Start again</button>
 	<p> ViigralX:<span id = 'winX'></span></p>
 	<p> Viigral0:<span id = 'win0'></span></p>
+	<p> Nichya:<span id = 'noWins'></span></p>
+		</div>
 
 </body> 
 
@@ -45,11 +47,13 @@ let butt = document.getElementById('butt');
 let cells = tbl.querySelectorAll('.cell');
 	let winX = document.getElementById('winX');
 	let win0 = document.getElementById('win0');
+	let noWins = document.getElementById('noWins');
 let result = [];
 
 startGame(tbl, who, butt);
 
 function startGame(tbl, who, butt){
+	let clicks = 0;
 	who.innerHTML = '';
 	let gamer = 'X';
 	let nextG = (gamer) => (gamer == 'X') ? '0' : 'X';
@@ -59,6 +63,7 @@ function startGame(tbl, who, butt){
 			this.innerHTML = gamer;
 			gamer = nextG(gamer);
 		this.removeEventListener('click',prepareCell);
+		clicks++;
 	let winner = getWinner(cells);
 		if(winner === 'X'){
 				who.innerHTML = 'X';	
@@ -68,7 +73,9 @@ function startGame(tbl, who, butt){
 				who.innerHTML = '0'; 
 		removeList(cells,prepareCell);
 		}
-
+		else if(clicks > 8 && winner === undefined){
+			who.innerHTML = 'Nichya';
+		}
 }
 
 		butt.addEventListener('click', function(){
@@ -77,9 +84,13 @@ function startGame(tbl, who, butt){
 			startGame(tbl, who, butt);
 				winX.innerHTML = countEl(result, 'X');
 				win0.innerHTML = countEl(result, '0');
+				noWins.innerHTML = countEl(result, 'Nichya');
 		});
-
 }
+
+
+console.log(result);
+
 
 function countEl(arr, str){
 	let count = 0;
@@ -103,8 +114,6 @@ function getWinner(elems){
 		else if(combsArr.every(elem => elem === '0')){
 			win = '0'; }
 	}
-
-		console.log(win);
 		return win;
 }
 
