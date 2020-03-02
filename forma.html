@@ -34,11 +34,7 @@
 
 </style><body>
 		<div id = 'leader'>
-	<table id = 'tbl' class = 'middle'>
-	<tr><td class = 'cell'></td><td class = 'cell'></td><td class = 'cell'></td></tr>
-	<tr><td class = 'cell'></td><td class = 'cell'></td><td class = 'cell'></td></tr>
-	<tr><td class = 'cell'></td><td class = 'cell'></td><td class = 'cell'></td></tr>
-	</table>
+	<table id = 'tbl' class = 'middle'></table>
 		</div>
 		<div>	<p> Viigral: <span id = 'who'></span></p>
 				<button id = 'butt'>Start again</button></div>
@@ -54,6 +50,7 @@
 'use strict'
 
 let tbl = document.getElementById('tbl');
+createTbl(tbl, 3, 3);
 let who = document.getElementById('who');
 let butt = document.getElementById('butt');
 let cells = tbl.querySelectorAll('.cell');
@@ -146,7 +143,21 @@ function clearCells(cells){
 	}
 }
 	
+function createTbl(par, rows, columns){
+	for(let i = 0; i < rows; i++){
+		let tr = createEl('tr', par);
+			for(let j = 0; j < columns; j++){
+				let td = createEl('td', tr);
+					td.className = 'cell';
+			}
+	}
+}
 
+function createEl(tag, par ){		
+	let el = document.createElement(tag);	
+		par.appendChild(el);
+		return el;
+}		
 
 </script>
  
